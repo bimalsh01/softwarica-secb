@@ -1,7 +1,6 @@
 // importing
 const express = require('express');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const connectDB = require('./database/db');
 
 // Making express app
@@ -13,10 +12,8 @@ dotenv.config();
 // mongodb connection
 connectDB();
 
-// json middleware (to accept json data)
+// Accepting json data
 app.use(express.json());
-
-
 
 // user routes
 app.use('/api/user', require('./routes/userRoutes'))
