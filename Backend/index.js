@@ -44,3 +44,8 @@ const PORT = process.env.PORT;
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`)
 })
+
+
+// make a POST route in userRoutes.js
+// make a function for login and export it
+// test in postman

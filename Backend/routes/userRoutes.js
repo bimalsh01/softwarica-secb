@@ -6,7 +6,7 @@ const userController = require("../controllers/userControllers")
 router.post('/create', userController.createUser)
 
 //  task 1: create login api
-router.get('/login', userController.loginUser)
+router.post('/login', userController.loginUser)
 
 // exporting
 module.exports = router;

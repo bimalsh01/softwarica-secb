@@ -1,16 +1,13 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
+import Navbar from '../components/Navbar'
 import { testApi } from '../apis/Api'
 
 const Homepage = () => {
-  
-  // Auto run when page loads
-  useEffect(() => {
-    testApi().then((res) => {
+  useEffect(() =>{
+    testApi().then((res) =>{
       console.log(res.data)
     })
   })
-
-
   return (
     <div>
       <h1>Homepage form page folder</h1>
