@@ -3,12 +3,25 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./database/db');
 const cors = require('cors');
+const cloudinary = require('cloudinary');
+const acceptMultimedia = require('connect-multiparty')
 
 // Making express app
 const app = express();
 
 // dotenv config
 dotenv.config();
+
+// cloudinary config
+
+          
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+app.use(acceptMultimedia())
 
 // cors config to accept request from frontend
 const corsOptions = {
@@ -36,6 +49,7 @@ app.use('/api/user', require('./routes/userRoutes'))
 // http://localhost:5000/api/user/login
 
 // CREATE A ROUTE FOR PRODUCTS
+app.use("/api/product", require("./routes/productRoutes"))
 
 
 // defining port

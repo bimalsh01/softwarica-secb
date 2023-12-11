@@ -1,6 +1,40 @@
-import React from 'react'
+import React,{useState} from 'react'
 
 const AdminDashboard = () => {
+
+    // Make useState
+    const [productName, setProductName] = useState('')
+    const [productPrice, setProductPrice] = useState('')
+    const [productDescription, setProductDescription] = useState('')
+    const [productCategory, setProductCategory] = useState('')
+
+    // make useState for image
+    const [productImage, setProductImage] = useState(null)
+    const [previewImage, setPreviewImage] = useState(null)
+
+    // image upload function
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0]
+        console.log(file)
+        setProductImage(file)
+        setPreviewImage(URL.createObjectURL(file))
+    }
+
+    // submit function
+    const handleSubmit = (e) => {
+        console.log(
+            productName, 
+            productPrice, 
+            productDescription, 
+            productCategory
+        )
+    }
+
+
+
+
+
+
     return (
         <>
             <div className='m-4'>
@@ -19,11 +53,41 @@ const AdminDashboard = () => {
                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div className="modal-body">
-                                    ...
+
+                                    {/* 
+                                        Name, Description, price, Catagory(Select), Image
+                                    */}
+                                    <label>Product Name</label>
+                                    <input onChange={(e) => setProductName(e.target.value)} className='form-control mb-2' type="text" name="" id="" placeholder='Enter product name' />
+
+                                    <label htmlFor="">Product Description</label>
+                                    <textarea onChange={(e) => setProductDescription(e.target.value)} className='form-control mb-2' placeholder={"Enter description"} cols="4" rows="4"></textarea>
+                                    
+                                    <label htmlFor="">Price</label>
+                                    <input onChange={(e) => setProductPrice(e.target.value)} type="number" className='form-control mb-2' placeholder='Enter your price' />
+
+                                   <label htmlFor="">Select category</label>
+                                   <select onChange={(e) => setProductCategory(e.target.value)} className='form-control mb-2'>
+                                        <option value="Flower">Flower</option>
+                                        <option value="Electronics">Electronics</option>
+                                        <option value="Gadgets">Gadgets</option>
+                                        <option value="Mobile">Mobile</option>
+                                   </select>
+
+                                   <label>Product Image</label>
+                                   <input onChange={handleImageUpload} type="file" className='form-control' />
+
+                                   {/* Preview Image */}
+
+                                   {
+                                     previewImage && <img src={previewImage} className='img-fluid rounded object-cover mt-2' />
+                                   }
+
+                                    
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" className="btn btn-primary">Save changes</button>
+                                    <button onClick={handleSubmit} type="button" className="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                         </div>
