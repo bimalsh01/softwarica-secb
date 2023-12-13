@@ -1,4 +1,6 @@
 import React,{useState} from 'react'
+import { createProductApi } from '../../apis/Api'
+import { toast } from 'react-toastify'
 
 const AdminDashboard = () => {
 
@@ -22,12 +24,26 @@ const AdminDashboard = () => {
 
     // submit function
     const handleSubmit = (e) => {
-        console.log(
-            productName, 
-            productPrice, 
-            productDescription, 
-            productCategory
-        )
+        e.preventDefault()
+        const formData = new FormData()
+        formData.append('productName', productName)
+        formData.append('productPrice', productPrice)
+        formData.append('productDescription', productDescription)
+        formData.append('productCategory', productCategory)
+        formData.append('productImage', productImage)
+
+        // send request to backend API
+        createProductApi(formData).then((res) => {
+            if(res.data.success == false){
+                toast.error(res.data.message)
+            } else{
+                toast.success(res.data.message)
+            }
+        }).catch((err) => {
+            console.log(err)
+            toast.error('Internal Server Error!')
+        })
+
     }
 
 
@@ -54,9 +70,6 @@ const AdminDashboard = () => {
                                 </div>
                                 <div className="modal-body">
 
-                                    {/* 
-                                        Name, Description, price, Catagory(Select), Image
-                                    */}
                                     <label>Product Name</label>
                                     <input onChange={(e) => setProductName(e.target.value)} className='form-control mb-2' type="text" name="" id="" placeholder='Enter product name' />
 

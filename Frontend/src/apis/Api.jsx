@@ -4,7 +4,7 @@ const Api = axios.create({
     baseURL: "http://localhost:5000",
     withCredentials: true,
     headers :{
-        "Content-Type" : "application/json"
+        "Content-Type" : "multipart/form-data"
     }
 })
 
@@ -17,3 +17,6 @@ export const registerApi = (data) => Api.post("/api/user/create", data)
 
 // Create login api
 export const loginApi = (data) => Api.post("/api/user/login", data)
+
+// create product API
+export const createProductApi = (formData) => Api.post('/api/product/create_product', formData)
