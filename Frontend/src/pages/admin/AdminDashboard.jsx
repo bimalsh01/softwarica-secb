@@ -131,12 +131,12 @@ const AdminDashboard = () => {
                             products.map((item) => (
                                 <tr>
                                     <td>
-                                        <img src="https://th.bing.com/th/id/OIP.F4r_Be7u4rlyASWn77m6cQHaE8?rs=1&pid=ImgDetMain" height={40} width={40} />
+                                        <img src={item.productImageUrl} height={40} width={40} />
                                     </td>
                                     <td>{item.productName}</td>
                                     <td>NPR.{item.productPrice}</td>
-                                    <td>Flower</td>
-                                    <td>Flower for decoration</td>
+                                    <td>{item.productCategory}</td>
+                                    <td>{item.productDescription.slice(0,10)}</td>
                                     <td>
                                         <div className="btn-group" role="group" aria-label="Basic example">
                                             <button type="button" className="btn btn-success">Edit</button>
