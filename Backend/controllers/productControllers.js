@@ -59,6 +59,25 @@ const createProduct = async (req,res) => {
 
 }
 
+
+// get all products
+const getProducts = async (req,res) => {
+    try {
+        const allProducts = await Products.find({});
+        res.json({
+            success : true,
+            message : "All products fetched successfully!",
+            products : allProducts
+        })
+        
+    } catch (error) {
+        console.log(error);
+        res.send("Internal server error")
+    }
+
+}
+
 module.exports = {
-    createProduct
+    createProduct,
+    getProducts
 }

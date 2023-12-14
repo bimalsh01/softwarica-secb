@@ -20,3 +20,6 @@ export const loginApi = (data) => Api.post("/api/user/login", data)
 
 // create product API
 export const createProductApi = (formData) => Api.post('/api/product/create_product', formData)
+
+// get products API
+export const getAllProductsApi = () => Api.get('/api/product/get_products')

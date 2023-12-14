@@ -1,5 +1,5 @@
-import React,{useState} from 'react'
-import { createProductApi } from '../../apis/Api'
+import React, { useState, useEffect } from 'react'
+import { createProductApi, getAllProductsApi } from '../../apis/Api'
 import { toast } from 'react-toastify'
 
 const AdminDashboard = () => {
@@ -22,6 +22,14 @@ const AdminDashboard = () => {
         setPreviewImage(URL.createObjectURL(file))
     }
 
+    // Load all products when page loads
+    const [products, setProducts] = useState([])
+    useEffect(() => {
+        getAllProductsApi().then((res) => {
+            setProducts(res.data.products)
+        })
+    }, [])
+
     // submit function
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -34,9 +42,9 @@ const AdminDashboard = () => {
 
         // send request to backend API
         createProductApi(formData).then((res) => {
-            if(res.data.success == false){
+            if (res.data.success == false) {
                 toast.error(res.data.message)
-            } else{
+            } else {
                 toast.success(res.data.message)
             }
         }).catch((err) => {
@@ -75,28 +83,28 @@ const AdminDashboard = () => {
 
                                     <label htmlFor="">Product Description</label>
                                     <textarea onChange={(e) => setProductDescription(e.target.value)} className='form-control mb-2' placeholder={"Enter description"} cols="4" rows="4"></textarea>
-                                    
+
                                     <label htmlFor="">Price</label>
                                     <input onChange={(e) => setProductPrice(e.target.value)} type="number" className='form-control mb-2' placeholder='Enter your price' />
 
-                                   <label htmlFor="">Select category</label>
-                                   <select onChange={(e) => setProductCategory(e.target.value)} className='form-control mb-2'>
+                                    <label htmlFor="">Select category</label>
+                                    <select onChange={(e) => setProductCategory(e.target.value)} className='form-control mb-2'>
                                         <option value="Flower">Flower</option>
                                         <option value="Electronics">Electronics</option>
                                         <option value="Gadgets">Gadgets</option>
                                         <option value="Mobile">Mobile</option>
-                                   </select>
+                                    </select>
 
-                                   <label>Product Image</label>
-                                   <input onChange={handleImageUpload} type="file" className='form-control' />
+                                    <label>Product Image</label>
+                                    <input onChange={handleImageUpload} type="file" className='form-control' />
 
-                                   {/* Preview Image */}
+                                    {/* Preview Image */}
 
-                                   {
-                                     previewImage && <img src={previewImage} className='img-fluid rounded object-cover mt-2' />
-                                   }
+                                    {
+                                        previewImage && <img src={previewImage} className='img-fluid rounded object-cover mt-2' />
+                                    }
 
-                                    
+
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -119,21 +127,25 @@ const AdminDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <img src="https://th.bing.com/th/id/OIP.F4r_Be7u4rlyASWn77m6cQHaE8?rs=1&pid=ImgDetMain" height={40} width={40} />
-                            </td>
-                            <td>Rose</td>
-                            <td>NPR.200</td>
-                            <td>Flower</td>
-                            <td>Flower for decoration</td>
-                            <td>
-                                <div className="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" className="btn btn-success">Edit</button>
-                                    <button type="button" className="btn btn-danger">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
+                        {
+                            products.map((item) => (
+                                <tr>
+                                    <td>
+                                        <img src="https://th.bing.com/th/id/OIP.F4r_Be7u4rlyASWn77m6cQHaE8?rs=1&pid=ImgDetMain" height={40} width={40} />
+                                    </td>
+                                    <td>{item.productName}</td>
+                                    <td>NPR.{item.productPrice}</td>
+                                    <td>Flower</td>
+                                    <td>Flower for decoration</td>
+                                    <td>
+                                        <div className="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" className="btn btn-success">Edit</button>
+                                            <button type="button" className="btn btn-danger">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
 
