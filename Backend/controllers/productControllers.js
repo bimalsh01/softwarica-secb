@@ -94,8 +94,24 @@ const getSingleProduct = async (req,res) => {
     }
 }
 
+// update product
+const updateProduct = async (req,res) => {
+    // step: 1 check incomming data
+    // Step: 2 destructuring data (Json,file)
+    // Step: 3 validate data (Dont valid image)
+    // Step: 4 try catch block
+    // Step: 5 (2 Cases)
+    // Case 1: If there is image, Upload and update
+    // Case 2: If there is no image, Update without image
+    // Step: 6 Update product and response
+    res.send("Update API is working!!")
+
+}
+
+
 module.exports = {
     createProduct,
     getProducts,
-    getSingleProduct
+    getSingleProduct,
+    updateProduct
 }

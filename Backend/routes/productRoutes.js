@@ -9,5 +9,6 @@ router.get("/get_products", productController.getProducts)
 // single product
 router.get("/get_product/:id", productController.getSingleProduct)
 
-
+// update product
+router.post("/update_product", productController.updateProduct)
 module.exports = router;
