@@ -77,7 +77,25 @@ const getProducts = async (req,res) => {
 
 }
 
+// fetch single product
+const getSingleProduct = async (req,res) => {
+    const productId = req.params.id;
+    try {
+        const singleProduct = await Products.findById(productId);
+        res.json({
+            success : true,
+            message : "Single product fetched successfully!",
+            product : singleProduct
+        })
+        
+    } catch (error) {
+        console.log(error);
+        res.send("Internal server error")
+    }
+}
+
 module.exports = {
     createProduct,
-    getProducts
+    getProducts,
+    getSingleProduct
 }

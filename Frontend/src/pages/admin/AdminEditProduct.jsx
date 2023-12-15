@@ -1,15 +1,35 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
+import { useParams } from 'react-router-dom'
+import { getSingleProductApi } from '../../apis/Api'
 
 const AdminEditProduct = () => {
+    // receive product id from url
+    const {id} = useParams()
+
+    // load product data
+    useEffect(() => {
+        getSingleProductApi(id).then((res) => {
+            console.log(res.data)
+            setProductName(res.data.product.productName)
+            setProductPrice(res.data.product.productPrice)
+            setProductDescription(res.data.product.productDescription)
+            setProductCategory(res.data.product.productCategory)
+            setOldImage(res.data.product.productImageUrl)
+        })
+    },[id])
+
+
     // Make useState
     const [productName, setProductName] = useState('')
     const [productPrice, setProductPrice] = useState('')
     const [productDescription, setProductDescription] = useState('')
     const [productCategory, setProductCategory] = useState('')
+    const [oldImage, setOldImage] = useState('')
 
     // make useState for image
     const [productImage, setProductImage] = useState(null)
     const [previewImage, setPreviewImage] = useState(null)
+
 
     // image upload function
     const handleImageUpload = (event) => {
@@ -22,21 +42,21 @@ const AdminEditProduct = () => {
         <>
             <div className='m-4'>
 
-                <h3>Editing product - <span className='text-danger'>'Macbook'</span></h3>
+                <h3>Editing product - <span className='text-danger'>{productName}</span></h3>
 
                 <div className='d-flex gap-3'>
                     <form action="">
                         <label>Product Name</label>
-                        <input onChange={(e) => setProductName(e.target.value)} className='form-control mb-2' type="text" name="" id="" placeholder='Enter product name' />
+                        <input value={productName} onChange={(e) => setProductName(e.target.value)} className='form-control mb-2' type="text" name="" id="" placeholder='Enter product name' />
 
                         <label htmlFor="">Product Description</label>
-                        <textarea onChange={(e) => setProductDescription(e.target.value)} className='form-control mb-2' placeholder={"Enter description"} cols="4" rows="4"></textarea>
+                        <textarea value={productDescription} onChange={(e) => setProductDescription(e.target.value)} className='form-control mb-2' placeholder={"Enter description"} cols="4" rows="4"></textarea>
 
                         <label htmlFor="">Price</label>
-                        <input onChange={(e) => setProductPrice(e.target.value)} type="number" className='form-control mb-2' placeholder='Enter your price' />
+                        <input value={productPrice} onChange={(e) => setProductPrice(e.target.value)} type="number" className='form-control mb-2' placeholder='Enter your price' />
 
                         <label htmlFor="">Select category</label>
-                        <select onChange={(e) => setProductCategory(e.target.value)} className='form-control mb-2'>
+                        <select value={productCategory} onChange={(e) => setProductCategory(e.target.value)} className='form-control mb-2'>
                             <option value="Flower">Flower</option>
                             <option value="Electronics">Electronics</option>
                             <option value="Gadgets">Gadgets</option>
@@ -51,7 +71,7 @@ const AdminEditProduct = () => {
                     </form>
                     <div>
                         <h6>Old Image Preview</h6>
-                        <img className='img-fluid rounded-4 object-fit-cover' width={300} height={300} src="https://th.bing.com/th/id/OIP.ucFQYLkHlaC5wht9HnnJ6QHaE7?rs=1&pid=ImgDetMain" alt="" />
+                        <img className='img-fluid rounded-4 object-fit-cover' width={300} height={300} src={oldImage} alt="" />
 
 
                         <h6 className='mt-4'>New Image</h6>
