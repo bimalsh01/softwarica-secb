@@ -1,11 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
 
 
     // get user data from local storage
     const user = JSON.parse(localStorage.getItem("user"))
+
+    // logout function
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        localStorage.clear()
+        navigate('/login')
+        window.location.reload()
+    }
 
     return (
         <>
@@ -46,7 +54,7 @@ const Navbar = () => {
                                         <ul class="dropdown-menu">
                                             <li><Link class="dropdown-item" to="/profile">Profile</Link></li>
                                             <li><Link class="dropdown-item" to="/changepp">Change password</Link></li>
-                                            <li><Link class="dropdown-item" to="./logout">Logout</Link></li>
+                                            <li><button onClick={handleLogout} class="dropdown-item">Logout</button></li>
                                         </ul>
                                     </div>
                                 </>

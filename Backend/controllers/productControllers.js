@@ -96,16 +96,104 @@ const getSingleProduct = async (req,res) => {
 
 // update product
 const updateProduct = async (req,res) => {
-    // step: 1 check incomming data
-    // Step: 2 destructuring data (Json,file)
-    // Step: 3 validate data (Dont valid image)
-    // Step: 4 try catch block
-    // Step: 5 (2 Cases)
-    // Case 1: If there is image, Upload and update
-    // Case 2: If there is no image, Update without image
-    // Step: 6 Update product and response
-    res.send("Update API is working!!")
+    // step 1 : check incomming data
+    console.log(req.body);
+    console.log(req.files);
 
+    // destructuring data
+    const {
+        productName,
+        productPrice,
+        productDescription,
+        productCategory
+    } = req.body;
+    const {productImage} = req.files;
+
+    // validate data
+    if( !productName 
+        || !productPrice 
+        || !productDescription 
+        || !productCategory){
+        return res.json({
+            success : false,
+            message : "Required fields are missing!"
+        })
+    }
+
+    try {
+        // case 1 : if there is image
+        if(productImage){
+            // upload image to cloudinary
+            const uploadedImage = await cloudinary.v2.uploader.upload(
+                productImage.path,
+                {
+                    folder : "products",
+                    crop : "scale"
+                }
+            )
+
+            // make updated json data
+            const updatedData = {
+                productName : productName,
+                productPrice : productPrice,
+                productDescription : productDescription,
+                productCategory : productCategory,
+                productImageUrl : uploadedImage.secure_url
+            }
+
+            // find product and update
+            const productId = req.params.id;
+            await Products.findByIdAndUpdate(productId, updatedData)
+            res.json({
+                success : true,
+                message : "Product updated successfully with Image!",
+                updatedProduct : updatedData
+            })
+
+        } else {
+            // update without image
+            const updatedData = {
+                productName : productName,
+                productPrice : productPrice,
+                productDescription : productDescription,
+                productCategory : productCategory,
+            }
+
+            // find product and update
+            const productId = req.params.id;
+            await Products.findByIdAndUpdate(productId, updatedData)
+            res.json({
+                success : true,
+                message : "Product updated successfully without Image!",
+                updatedProduct : updatedData
+            })
+        }
+        
+    } catch (error) {
+        res.status(500).json({  
+            success : false,
+            message : "Internal server error"
+        })
+    }
+}
+
+// delete product
+const deleteProduct = async (req,res) =>{
+    const productId = req.params.id;
+
+    try {
+        await Products.findByIdAndDelete(productId);
+        res.json({
+            success : true,
+            message : "Product deleted successfully!"
+        })
+        
+    } catch (error) {
+        res.json({
+            success : false,
+            message : "Server error!!"
+        })
+    }
 }
 
 
@@ -113,5 +201,6 @@ module.exports = {
     createProduct,
     getProducts,
     getSingleProduct,
-    updateProduct
+    updateProduct,
+    deleteProduct
 }

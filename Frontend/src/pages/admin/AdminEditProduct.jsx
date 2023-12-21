@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom'
-import { getSingleProductApi } from '../../apis/Api'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getSingleProductApi, updateProductApi } from '../../apis/Api'
+import { toast } from 'react-toastify'
 
 const AdminEditProduct = () => {
     // receive product id from url
@@ -38,6 +39,36 @@ const AdminEditProduct = () => {
         setProductImage(file)
         setPreviewImage(URL.createObjectURL(file))
     }
+
+    // handle submit function
+    const navigate = useNavigate()
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const formData = new FormData()
+        formData.append('productName', productName)
+        formData.append('productPrice', productPrice)
+        formData.append('productDescription', productDescription)
+        formData.append('productCategory', productCategory)
+        formData.append('productImage', productImage)
+
+        // make a api call
+        updateProductApi(id, formData).then((res)=>{
+            if(res.data.success == false){
+                toast.error(res.data.message)
+            } else{
+                toast.success(res.data.message)
+                navigate('/admin/dashboard')
+            }
+        }).catch((err) => {
+            console.log(err)
+            toast.error('Internal Server Error!')
+        })
+
+
+
+    }
+
+
     return (
         <>
             <div className='m-4'>
@@ -66,7 +97,7 @@ const AdminEditProduct = () => {
                         <label>Product Image</label>
                         <input onChange={handleImageUpload} type="file" className='form-control' />
 
-                        <button className='btn btn-primary w-100 mt-2'>Update product</button>
+                        <button onClick={handleSubmit} className='btn btn-primary w-100 mt-2'>Update product</button>
 
                     </form>
                     <div>

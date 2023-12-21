@@ -10,5 +10,9 @@ router.get("/get_products", productController.getProducts)
 router.get("/get_product/:id", productController.getSingleProduct)
 
 // update product
-router.post("/update_product", productController.updateProduct)
+router.put("/update_product/:id", productController.updateProduct)
+
+// delete product
+router.delete("/delete_product/:id", productController.deleteProduct)
+
 module.exports = router;
