@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { createProductApi, getAllProductsApi } from '../../apis/Api'
+import { createProductApi, deleteProductApi, getAllProductsApi } from '../../apis/Api'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 
@@ -52,6 +52,28 @@ const AdminDashboard = () => {
             console.log(err)
             toast.error('Internal Server Error!')
         })
+
+    }
+
+
+    // delete product function
+    const handleDelete = (id) => {
+
+        // confirm dialog box
+        const confirm = window.confirm("Are you sure you want to delete this product?")
+        if(!confirm){
+            return
+        } else {
+            deleteProductApi(id).then((res) => {
+                if(res.data.success == false){
+                    toast.error(res.data.message)
+                } else{
+                    toast.success(res.data.message)
+                    window.location.reload()
+                }
+            })
+
+        }
 
     }
 
@@ -141,7 +163,7 @@ const AdminDashboard = () => {
                                     <td>
                                         <div className="btn-group" role="group" aria-label="Basic example">
                                             <Link to={`/admin/edit/${item._id}`} type="button" className="btn btn-success">Edit</Link>
-                                            <button type="button" className="btn btn-danger">Delete</button>
+                                            <button onClick={() => handleDelete(item._id)} type="button" className="btn btn-danger">Delete</button>
                                         </div>
                                     </td>
                                 </tr>
