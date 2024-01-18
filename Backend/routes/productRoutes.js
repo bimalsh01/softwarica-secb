@@ -16,4 +16,12 @@ router.put("/update_product/:id",authGuardAdmin, productController.updateProduct
 // delete product
 router.delete("/delete_product/:id",authGuardAdmin ,productController.deleteProduct)
 
+// create order
+router.post("/create_order", productController.createOrder)
+
+router.get("/get_orders", productController.getOrders)
+
+// pagination route
+router.get('/get_pagination', productController.getPagination)
+
 module.exports = router;

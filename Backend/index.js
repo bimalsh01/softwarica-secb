@@ -39,7 +39,7 @@ app.use(express.json());
 
 // creating test route
 app.get("/test", (req,res) => {
-    res.status(200).json("Hello from server");
+    res.status(200).send("Hello");
 })
 
 // user routes
@@ -58,6 +58,9 @@ const PORT = process.env.PORT;
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`)
 })
+
+// exporting app
+module.exports = app;
 
 
 // make a POST route in userRoutes.js
